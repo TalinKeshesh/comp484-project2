@@ -81,25 +81,34 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
       document.querySelector('.comment').textContent = pet_info.comment;
     }
 
+
+    //Soooo basically .removeClass() clears the previous mood styling, and .show()
+    // displays the comment box after the user interacts with a button
+
+    //After a button is clicked, .removeClass() clears the previous mood styling
+    // from the bottom comment box so the new button reaction can be applied correctly.
+    // Then .show() displays the comment box so the updated text and color appear on the page
     function showPetComment(message, moodClass) {
-      // Put the pet's message into the span without using jQuery .text()
+      // Put the pet's message into the span without using .text()
       document.querySelector('.comment').innerHTML = message;
 
-      // jQuery .removeClass() removes old mood classes so only one mood style stays active
+      // .removeClass() removes old mood classes so only one mood style stays active
       $('.pet-comment-box').removeClass('mood-normal mood-happy mood-sad mood-briny');
 
-      // Add the new mood class with plain JavaScript instead of jQuery .addClass()
+      // Add the new mood class with plain JavaScript instead of .addClass()
       document.querySelector('.pet-comment-box').classList.add(moodClass);
 
-      // jQuery .show() makes the hidden comment box appear after a button press
+      // .show() makes the hidden comment box appear after a button press
       $('.pet-comment-box').show();
     }
 
 
 
     function updatePetMoodBox(moodClass) {
+      // .removeClass() removes old mood classes so only one mood style stays active
       $('.pet-comment-box').removeClass('mood-normal mood-happy mood-sad mood-briny');
       document.querySelector('.pet-comment-box').classList.add(moodClass);
+      // .show() makes the hidden comment box appear after a button press
       $('.pet-comment-box').show();
     }
 
