@@ -7,6 +7,7 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
     $('.treat-button').click(clickedTreatButton);
     $('.play-button').click(clickedPlayButton);
     $('.exercise-button').click(clickedExerciseButton);
+    $('.brine-button').click(clickedBrineButton);
   
 
   
@@ -14,23 +15,45 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
   })
   
     // Add a variable "pet_info" equal to a object with the name (string), weight (number), and happiness (number) of your pet
-    var pet_info = {name:"My Pet Name", weight:"??", happiness:"??"};
+    var pet_info = {name:"Picklesss", weight:2, happiness:8, brine:3, comment: "I'm ready to roll!"};
   
     function clickedTreatButton() {
-      // Increase pet happiness
-      // Increase pet weight
+      pet_info.happiness += 1;
+      pet_info.weight += 1;
+      pet_info.comment = "Yum! That hit the spot.",
+      playButtonSound();
+      updatePetMoodBox("mood-normal");
+      updatePetImage("normalPickle.png");
       checkAndUpdatePetInfoInHtml();
     }
     
     function clickedPlayButton() {
-      // Increase pet happiness
-      // Decrease pet weight
+      pet_info.happiness += 1;
+      pet_info.weight -= 1;
+      pet_info.comment = "Wheee! Pickle power!";
+      playButtonSound();
+      updatePetMoodBox("mood-happy");
+      updatePetImage("happyPickle.png");
       checkAndUpdatePetInfoInHtml();
     }
     
     function clickedExerciseButton() {
-      // Decrease pet happiness
-      // Decrease pet weight
+      pet_info.happiness -= 1;
+      pet_info.weight -= 1;
+      pet_info.comment = "I am one tired pickle...";
+      playButtonSound();
+      updatePetMoodBox("mood-sad");
+      updatePetImage("sadPickle.png");
+      checkAndUpdatePetInfoInHtml();
+    }
+
+    function clickedBrineButton() {
+      pet_info.brine += 1;
+      pet_info.happiness += 1;
+      pet_info.comment = "Ahhh, extra briny and happy.";
+      playButtonSound();
+      updatePetMoodBox("mood-briny");
+      updatePetImage("brinyPickle.png");
       checkAndUpdatePetInfoInHtml();
     }
   
@@ -40,13 +63,53 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
     }
     
     function checkWeightAndHappinessBeforeUpdating() {
-      // Add conditional so if weight is lower than zero.
+      if (pet_info.weight < 0) {
+        pet_info.weight = 0;
+      }
+
+      if (pet_info.happiness < 0) {
+        pet_info.happiness = 0;
+      }
     }
     
     // Updates your HTML with the current values in your pet_info object
     function updatePetInfoInHtml() {
-      $('.name').text(pet_info['name']);
-      $('.weight').text(pet_info['weight']);
-      $('.happiness').text(pet_info['happiness']);
+      document.querySelector('.name').textContent = pet_info.name;
+      document.querySelector('.weight').textContent = pet_info.weight;
+      document.querySelector('.happiness').textContent = pet_info.happiness;
+      document.querySelector('.brine').textContent = pet_info.brine;
+      document.querySelector('.comment').textContent = pet_info.comment;
     }
-  
+
+    function showPetComment(message, moodClass) {
+      // Put the pet's message into the span without using jQuery .text()
+      document.querySelector('.comment').innerHTML = message;
+
+      // jQuery .removeClass() removes old mood classes so only one mood style stays active
+      $('.pet-comment-box').removeClass('mood-normal mood-happy mood-sad mood-briny');
+
+      // Add the new mood class with plain JavaScript instead of jQuery .addClass()
+      document.querySelector('.pet-comment-box').classList.add(moodClass);
+
+      // jQuery .show() makes the hidden comment box appear after a button press
+      $('.pet-comment-box').show();
+    }
+
+
+
+    function updatePetMoodBox(moodClass) {
+      $('.pet-comment-box').removeClass('mood-normal mood-happy mood-sad mood-briny');
+      document.querySelector('.pet-comment-box').classList.add(moodClass);
+      $('.pet-comment-box').show();
+    }
+
+
+function updatePetImage(imageFile) {
+  $('.pet-image').attr('src', 'images/' + imageFile);
+}
+
+function playButtonSound() {
+  const sound = document.getElementById('button-sound');
+  sound.currentTime = 0;
+  sound.play();
+}
